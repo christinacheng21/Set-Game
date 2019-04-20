@@ -12,10 +12,12 @@ class SetGame{
     
     private var remainingDeck: [Card]
     var visibleDeck: [Card]
+    var selectedCardIndices: [Int]
     
     init(){
         remainingDeck = []
         visibleDeck = []
+        selectedCardIndices = []
         for num in 1...3{
             for symbol in 1...3{
                 for shading in 1...3{
@@ -34,6 +36,31 @@ class SetGame{
     
     func addOneCard() {
         visibleDeck.append(remainingDeck.remove(at: 0))
+    }
+    
+    func onCardTouched(indexOfTouchedCard : Int ) {
+        // check if one of already selected
+        if (selectedCardIndices.contains(indexOfTouchedCard)){
+            selectedCardIndices.remove(at: selectedCardIndices.index(of: indexOfTouchedCard)!)
+        } else {
+            selectedCardIndices.append(indexOfTouchedCard)
+        }
+        
+        // if now 3 total selected
+        if (selectedCardIndices.count == 3) {
+            selectedCardsAreASet()
+        }
+    }
+    
+    func selectedCardsAreASet() -> Bool {
+        var selectedCards: [Card] = []
+        for index in selectedCardIndices {
+            selectedCards.append(visibleDeck[index])
+        }
+        // todo actually compare, not always return false
+        //
+
+        return false
     }
     
 }

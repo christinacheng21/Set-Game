@@ -51,25 +51,13 @@ class ViewController: UIViewController {
         }
     }
     
-    
-    /*
-     @objc func buttonAction(sender: UIButton){
-     let oldCardCount = setViews?.drawnCardViews.count
-     game?.addOneCard()
-     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(touchCard(_:)))
-     let newCard = self.setViews!.drawnCardViews[oldCardCount!]
-     newCard.addGestureRecognizer(tapGesture)
-     
-     setViews!.visibleDeck = game!.visibleDeck
-     UIView.animate(withDuration: 4) {
-     self.setViews?.addOneCard()
-     self.view.addSubview(newCard)
-     }
-     }
-     */
-    
     @objc func touchCard(_ recognizer: UITapGestureRecognizer) {
         print("card touched")
+        let touchedView = recognizer.view as! SetDrawnCardView
+        
+        // tell model that *this* card was touched
+        // add properties to card for drawing isSelected, isMatch, isNotMatch, etc.
+        
     }
     
     func makeButton(){
