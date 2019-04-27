@@ -13,11 +13,13 @@ class SetGame{
     private var remainingDeck: [Card]
     var visibleDeck: [Card]
     var selectedCardIndices: [Int]
+    var selectedCardsAreASet: Bool
     
     init(){
         remainingDeck = []
         visibleDeck = []
         selectedCardIndices = []
+        selectedCardsAreASet = false
         for num in 1...3{
             for symbol in 1...3{
                 for shading in 1...3{
@@ -48,19 +50,41 @@ class SetGame{
         
         // if now 3 total selected
         if (selectedCardIndices.count == 3) {
-            selectedCardsAreASet()
+            setSelectedCardsAreASet()
         }
     }
     
-    func selectedCardsAreASet() -> Bool {
+    func setSelectedCardsAreASet() {
         var selectedCards: [Card] = []
+        var properties: [[Int]] = []
         for index in selectedCardIndices {
             selectedCards.append(visibleDeck[index])
         }
-        // todo actually compare, not always return false
-        //
-
-        return false
+        for card in selectedCards {
+            properties[0].append(card.color)
+            properties[1].append(card.number)
+            properties[2].append(card.shading)
+            properties[3].append(card.symbol)
+        }
+        for row in properties {
+            if (!isRowValid(row: row)){
+                selectedCardsAreASet = false
+                return
+            }
+        }
+        selectedCardsAreASet = true
+    }
+    
+    func isRowValid(row: [Int]) -> Bool {
+        return ((row[0] == row[1] && row[1] == row[2]) || (row[0] != row[1] && row[1] != row[2] && row[0] != row[2]) )
+        
+//        if (row[0] == row[1] && row[1] == row[2]){
+//            return true
+//        } else if (row[0] != row[1] && row[1] != row[2] && row[0] != row[2]){
+//            return true
+//        } else {
+//            return false
+//        }
     }
     
 }

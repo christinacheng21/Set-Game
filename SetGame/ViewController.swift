@@ -16,7 +16,6 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         game = SetGame()
-        
 
         let visibleCards = game?.visibleDeck
         setViews = SetView(numCards2: game!.visibleDeck.count, frame2: view.frame, ratio2: 1.0, visibleCards: visibleCards!)
@@ -49,13 +48,16 @@ class ViewController: UIViewController {
             
             self.view.addSubview((self.setViews?.drawnCardViews[oldCardsCount!])!)
         }
+        
+        // updateViewFromModel
     }
     
     @objc func touchCard(_ recognizer: UITapGestureRecognizer) {
         print("card touched")
         let touchedView = recognizer.view as! SetDrawnCardView
-        
-        // tell model that *this* card was touched
+        let indexOfTouched = setViews?.drawnCardViews.index(of: touchedView)!
+        game?.onCardTouched(indexOfTouchedCard: indexOfTouched!)
+
         // add properties to card for drawing isSelected, isMatch, isNotMatch, etc.
         
     }
@@ -68,8 +70,25 @@ class ViewController: UIViewController {
         view.addSubview(button)
     }
     
-    func prepareCardsFromModel() {
+    // functions which change model
+    // 1. add card
+    // 2. touch card X
+    
+    // functions which respond to model changes
+    func updateViewFromModel() { // respond to model changes to card touches
+        // 1. check model state
+            // which cards are selected?
+        // 2. update visuals of cards to match model
+            // isSelected, and isPartOfTriple, and isMatch?
         
+        for cardIndex in (self.game?.selectedCardIndices)! {
+            // todo make all cards white
+            // make selected cards grey
+            // if set/failed set, make green|red
+//            setViews?.drawnCardViews[cardIndex].
+        }
+        // which cards to update visuals of, and isPartOfTriple?
+        // self.game?.selectedCardsAreASet // isMatch?
     }
 
 }
