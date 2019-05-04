@@ -8,14 +8,22 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+protocol SetGameDelegate {
+    func onSelectedCardIndicesChanged(selectedIndices: [Int], isSet: Bool?)
+}
+
+class ViewController: UIViewController, SetGameDelegate {
+    func onSelectedCardIndicesChanged(selectedIndices: [Int], isSet: Bool?) {
+        // todo
+    }
+    
     
     var setViews : SetView?
     var game: SetGame?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        game = SetGame()
+        game = SetGame(viewController: self)
 
         let visibleCards = game?.visibleDeck
         setViews = SetView(numCards2: game!.visibleDeck.count, frame2: view.frame, ratio2: 1.0, visibleCards: visibleCards!)
@@ -74,21 +82,25 @@ class ViewController: UIViewController {
     // 1. add card
     // 2. touch card X
     
-    // functions which respond to model changes
-    func updateViewFromModel() { // respond to model changes to card touches
-        // 1. check model state
-            // which cards are selected?
+//    // functions which respond to model changes
+//    func updateViewFromModel() { // respond to model changes to card touches
+//        // 1. check model state
+//            // which cards are selected?
+//
+//        // which cards to update visuals of, and isPartOfTriple?
+//        // self.game?.selectedCardsAreASet // isMatch?
+//    }
+    
+    func onSelectedCardIndicesChanged() {
         // 2. update visuals of cards to match model
-            // isSelected, and isPartOfTriple, and isMatch?
-        
-        for cardIndex in (self.game?.selectedCardIndices)! {
-            // todo make all cards white
-            // make selected cards grey
-            // if set/failed set, make green|red
-//            setViews?.drawnCardViews[cardIndex].
-        }
-        // which cards to update visuals of, and isPartOfTriple?
-        // self.game?.selectedCardsAreASet // isMatch?
+        //            // isSelected, and isPartOfTriple, and isMatch?
+        //
+        //        for cardIndex in (self.game?.selectedCardIndices)! {
+        //            // todo make all cards white
+        //            // make selected cards grey
+        //            // if set/failed set, make green|red
+        ////            setViews?.drawnCardViews[cardIndex].
+        //        }
     }
 
 }

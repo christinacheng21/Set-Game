@@ -12,10 +12,15 @@ class SetGame{
     
     private var remainingDeck: [Card]
     var visibleDeck: [Card]
-    var selectedCardIndices: [Int]
-    var selectedCardsAreASet: Bool
+    var selectedCardIndices: [Int] {
+        didSet {
+            setGameViewControllerDelegate.onSelectedCardIndicesChanged(selectedIndices: selectedCardIndices, isSet: self.selectedCardsAreASet ?? nil)
+        }
+    }
+    var selectedCardsAreASet: Bool?
+    var setGameViewControllerDelegate: SetGameDelegate
     
-    init(){
+    init(viewController: SetGameDelegate){
         remainingDeck = []
         visibleDeck = []
         selectedCardIndices = []
@@ -34,6 +39,7 @@ class SetGame{
         for _ in 0..<9 {
             visibleDeck.append(remainingDeck.remove(at: 0))
         }
+        self.setGameViewControllerDelegate = viewController
     }
     
     func addOneCard() {
@@ -51,12 +57,14 @@ class SetGame{
         // if now 3 total selected
         if (selectedCardIndices.count == 3) {
             setSelectedCardsAreASet()
+        } else {
+            selectedCardsAreASet = nil
         }
     }
     
     func setSelectedCardsAreASet() {
         var selectedCards: [Card] = []
-        var properties: [[Int]] = []
+        var properties: [[Int]] = [[], [], [], []]
         for index in selectedCardIndices {
             selectedCards.append(visibleDeck[index])
         }
