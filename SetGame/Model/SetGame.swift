@@ -8,23 +8,27 @@
 
 import Foundation
 
+// X is working! 1. unselect
+// X is working! 2. set to 0 selected after 3
+// X is working! 3. debug isSet
+// 4. points
+// 5. new cards come from off screen
+
 class SetGame{
     
     private var remainingDeck: [Card]
     var visibleDeck: [Card]
     var selectedCardIndices: [Int] {
         didSet {
-            setGameViewControllerDelegate.onSelectedCardIndicesChanged(selectedIndices: selectedCardIndices, isSet: self.selectedCardsAreASet ?? nil)
+            setGameViewControllerDelegate.onSelectedCardIndicesChanged(selectedIndices: selectedCardIndices, isSet: selectedCardsAreASet())
         }
     }
-    var selectedCardsAreASet: Bool?
     var setGameViewControllerDelegate: SetGameDelegate
     
     init(viewController: SetGameDelegate){
         remainingDeck = []
         visibleDeck = []
         selectedCardIndices = []
-        selectedCardsAreASet = false
         for num in 1...3{
             for symbol in 1...3{
                 for shading in 1...3{
@@ -48,39 +52,38 @@ class SetGame{
     
     func onCardTouched(indexOfTouchedCard : Int ) {
         // check if one of already selected
-        if (selectedCardIndices.contains(indexOfTouchedCard)){
+        if (selectedCardIndices.count == 3){
+            selectedCardIndices = [indexOfTouchedCard]
+        } else if (selectedCardIndices.contains(indexOfTouchedCard)){
             selectedCardIndices.remove(at: selectedCardIndices.index(of: indexOfTouchedCard)!)
         } else {
             selectedCardIndices.append(indexOfTouchedCard)
         }
-        
-        // if now 3 total selected
-        if (selectedCardIndices.count == 3) {
-            setSelectedCardsAreASet()
-        } else {
-            selectedCardsAreASet = nil
-        }
     }
     
-    func setSelectedCardsAreASet() {
-        var selectedCards: [Card] = []
-        var properties: [[Int]] = [[], [], [], []]
-        for index in selectedCardIndices {
-            selectedCards.append(visibleDeck[index])
-        }
-        for card in selectedCards {
-            properties[0].append(card.color)
-            properties[1].append(card.number)
-            properties[2].append(card.shading)
-            properties[3].append(card.symbol)
-        }
-        for row in properties {
-            if (!isRowValid(row: row)){
-                selectedCardsAreASet = false
-                return
+    func selectedCardsAreASet() -> Bool?{
+        // debug here
+        if (selectedCardIndices.count != 3){
+            return nil
+        } else {
+            var selectedCards: [Card] = []
+            var properties: [[Int]] = [[], [], [], []]
+            for index in selectedCardIndices {
+                selectedCards.append(visibleDeck[index])
             }
+            for card in selectedCards {
+                properties[0].append(card.color)
+                properties[1].append(card.number)
+                properties[2].append(card.shading)
+                properties[3].append(card.symbol)
+            }
+            for row in properties {
+                if (!isRowValid(row: row)){
+                    return false
+                }
+            }
+            return true
         }
-        selectedCardsAreASet = true
     }
     
     func isRowValid(row: [Int]) -> Bool {

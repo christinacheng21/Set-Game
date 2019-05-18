@@ -12,9 +12,30 @@ protocol SetGameDelegate {
     func onSelectedCardIndicesChanged(selectedIndices: [Int], isSet: Bool?)
 }
 
+// TODO: change shape
 class ViewController: UIViewController, SetGameDelegate {
     func onSelectedCardIndicesChanged(selectedIndices: [Int], isSet: Bool?) {
         // todo
+        // tell view which card view was touched
+        for card in (setViews?.drawnCardViews)! {
+            card.backgroundColor = UIColor(red: 255, green: 255, blue: 255, alpha: 1)
+        }
+        // view update card view that card was touched
+        if (isSet == nil){
+            for index in selectedIndices {
+                setViews?.drawnCardViews[index].backgroundColor = UIColor.gray
+            }
+        } else if (!isSet!){
+            for index in selectedIndices {
+                setViews?.drawnCardViews[index].backgroundColor = UIColor.red
+            }
+        } else {
+            for index in selectedIndices {
+                setViews?.drawnCardViews[index].backgroundColor = UIColor.green
+            }
+        }
+        // three + a match, three + not a match
+        
     }
     
     
