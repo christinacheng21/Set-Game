@@ -67,6 +67,7 @@ class SetView {
         let drawnNewCardViews = cardMaker.makeDrawnCardViews(myCardViews: newBlankCardViews, modelVisibleCards: visibleDeck)
         
         resizeAndMoveOldCards(drawnNewCardViews: drawnNewCardViews)
+        
         animateInNewCard(drawnNewCardViews: drawnNewCardViews)
     }
     
@@ -77,7 +78,12 @@ class SetView {
     }
     
     func animateInNewCard(drawnNewCardViews: [SetDrawnCardView]){
-        drawnCardViews.append( drawnNewCardViews.last! )
+        // 1. get reference to new card
+        // 2. store final frame of new card
+        // 3. set initial frame of new card
+        // 4. set card to initial frame
+        drawnCardViews.append( drawnNewCardViews.last! ) //5. append here
+        // 6. set to final frame
         numCards += 1
     }
     

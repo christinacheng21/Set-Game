@@ -10,10 +10,18 @@ import UIKit
 
 protocol SetGameDelegate {
     func onSelectedCardIndicesChanged(selectedIndices: [Int], isSet: Bool?)
+    func onPointsChanged(newPoints: Int)
 }
 
 // TODO: change shape
 class ViewController: UIViewController, SetGameDelegate {
+    
+    var label: UILabel?
+    
+    func onPointsChanged(newPoints: Int) {
+        label!.text = "Points: \(newPoints)"
+    }
+    
     func onSelectedCardIndicesChanged(selectedIndices: [Int], isSet: Bool?) {
         // todo
         // tell view which card view was touched
@@ -34,6 +42,11 @@ class ViewController: UIViewController, SetGameDelegate {
                 setViews?.drawnCardViews[index].backgroundColor = UIColor.green
             }
         }
+        for index in (game?.deadCardIndices)! {
+            let card = setViews?.drawnCardViews[index]
+            card?.isHidden = true
+        }
+        //
         // three + a match, three + not a match
         
     }
@@ -59,6 +72,7 @@ class ViewController: UIViewController, SetGameDelegate {
         setViews!.layoutAllCardViews(view: view)
         
         makeButton()
+        makePointLabel()
     }
     
     @objc func buttonAction(sender: UIButton){
@@ -74,7 +88,16 @@ class ViewController: UIViewController, SetGameDelegate {
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.touchCard(_:)))
             let newCard = self.setViews!.drawnCardViews[oldCardsCount!]
             newCard.addGestureRecognizer(tapGesture)
+        }
+        // starting frame
+        // end frame
+        
+        UIView.animate(withDuration: 2){
+            // initialize with start
+            // add subview
+            // change to end
             
+                 // self.setViews?.drawnCardViews[oldCardsCount!]
             self.view.addSubview((self.setViews?.drawnCardViews[oldCardsCount!])!)
         }
         
@@ -97,6 +120,12 @@ class ViewController: UIViewController, SetGameDelegate {
         button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
         button.backgroundColor = UIColor.black
         view.addSubview(button)
+    }
+    
+    func makePointLabel(){
+        label = UILabel(frame: CGRect(x: 20, y: 20, width: 100, height: 50))
+        label?.text = "Points: 0"
+        view.addSubview(label!)
     }
     
     // functions which change model

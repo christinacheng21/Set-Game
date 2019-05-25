@@ -11,23 +11,34 @@ import Foundation
 // X is working! 1. unselect
 // X is working! 2. set to 0 selected after 3
 // X is working! 3. debug isSet
-// 4. points
+// X 4. points
 // 5. new cards come from off screen
+// X 6. card set needs to be removed
+// 7. 81 cards
+// 8. squiggle
 
 class SetGame{
     
     private var remainingDeck: [Card]
     var visibleDeck: [Card]
+    var deadCardIndices: [Int]
     var selectedCardIndices: [Int] {
         didSet {
             setGameViewControllerDelegate.onSelectedCardIndicesChanged(selectedIndices: selectedCardIndices, isSet: selectedCardsAreASet())
         }
     }
     var setGameViewControllerDelegate: SetGameDelegate
+    var points: Int {
+        didSet {
+            setGameViewControllerDelegate.onPointsChanged(newPoints: points)
+        }
+    }
     
     init(viewController: SetGameDelegate){
+        points = 0
         remainingDeck = []
         visibleDeck = []
+        deadCardIndices = []
         selectedCardIndices = []
         for num in 1...3{
             for symbol in 1...3{
@@ -58,6 +69,14 @@ class SetGame{
             selectedCardIndices.remove(at: selectedCardIndices.index(of: indexOfTouchedCard)!)
         } else {
             selectedCardIndices.append(indexOfTouchedCard)
+        }
+        if (selectedCardsAreASet() ?? false) {
+            points += 1
+//            deadCardIndices.append(contentsOf: selectedCardIndices)
+            for index in selectedCardIndices {
+                deadCardIndices.append(index)
+            }
+            
         }
     }
     
