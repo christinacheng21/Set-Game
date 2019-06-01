@@ -12,7 +12,7 @@ import Foundation
 // X is working! 2. set to 0 selected after 3
 // X is working! 3. debug isSet
 // X 4. points
-// 5. new cards come from off screen
+// X 5. new cards come from off screen
 // X 6. card set needs to be removed
 // 7. 81 cards
 // 8. squiggle

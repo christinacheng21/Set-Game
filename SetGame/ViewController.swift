@@ -80,28 +80,23 @@ class ViewController: UIViewController, SetGameDelegate {
         game?.addOneCard()
         setViews!.visibleDeck = game!.visibleDeck
         
+        let moveOldCardsAnimation : () -> Void = {self.setViews?.addOneCard()}
         
-        
-        UIView.animate(withDuration: 4) {
-            self.setViews?.addOneCard()
-            
+        let addOneCardAnimation : (Bool)-> Void = { _ in
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.touchCard(_:)))
             let newCard = self.setViews!.drawnCardViews[oldCardsCount!]
             newCard.addGestureRecognizer(tapGesture)
-        }
-        // starting frame
-        // end frame
-        
-        UIView.animate(withDuration: 2){
-            // initialize with start
-            // add subview
-            // change to end
             
-                 // self.setViews?.drawnCardViews[oldCardsCount!]
-            self.view.addSubview((self.setViews?.drawnCardViews[oldCardsCount!])!)
+            let newFrame = newCard.frame
+            newCard.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+            
+            UIView.animate(withDuration: 2){
+                self.view.addSubview(newCard)
+                newCard.frame = newFrame
+            }
         }
         
-        // updateViewFromModel
+        UIView.animate(withDuration: 4, animations: moveOldCardsAnimation, completion: addOneCardAnimation)
     }
     
     @objc func touchCard(_ recognizer: UITapGestureRecognizer) {
@@ -109,9 +104,6 @@ class ViewController: UIViewController, SetGameDelegate {
         let touchedView = recognizer.view as! SetDrawnCardView
         let indexOfTouched = setViews?.drawnCardViews.index(of: touchedView)!
         game?.onCardTouched(indexOfTouchedCard: indexOfTouched!)
-
-        // add properties to card for drawing isSelected, isMatch, isNotMatch, etc.
-        
     }
     
     func makeButton(){
@@ -128,18 +120,6 @@ class ViewController: UIViewController, SetGameDelegate {
         view.addSubview(label!)
     }
     
-    // functions which change model
-    // 1. add card
-    // 2. touch card X
-    
-//    // functions which respond to model changes
-//    func updateViewFromModel() { // respond to model changes to card touches
-//        // 1. check model state
-//            // which cards are selected?
-//
-//        // which cards to update visuals of, and isPartOfTriple?
-//        // self.game?.selectedCardsAreASet // isMatch?
-//    }
     
     func onSelectedCardIndicesChanged() {
         // 2. update visuals of cards to match model

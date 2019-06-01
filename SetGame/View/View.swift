@@ -68,24 +68,26 @@ class SetView {
         
         resizeAndMoveOldCards(drawnNewCardViews: drawnNewCardViews)
         
-        animateInNewCard(drawnNewCardViews: drawnNewCardViews)
+        addNewCard(drawnNewCardViews: drawnNewCardViews)
     }
     
     func resizeAndMoveOldCards(drawnNewCardViews: [SetDrawnCardView]) {
-        for i in drawnCardViews.indices {
-            drawnCardViews[i].frame = drawnNewCardViews[i].frame
+        for i in self.drawnCardViews.indices {
+            self.drawnCardViews[i].frame = drawnNewCardViews[i].frame
         }
     }
     
-    func animateInNewCard(drawnNewCardViews: [SetDrawnCardView]){
+    func addNewCard(drawnNewCardViews: [SetDrawnCardView]){
         // 1. get reference to new card
         // 2. store final frame of new card
         // 3. set initial frame of new card
         // 4. set card to initial frame
-        drawnCardViews.append( drawnNewCardViews.last! ) //5. append here
+        self.drawnCardViews.append( drawnNewCardViews.last! ) //5. append here
         // 6. set to final frame
         numCards += 1
     }
+    
+    
     
 }
 
